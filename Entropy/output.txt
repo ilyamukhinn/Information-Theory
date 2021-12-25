@@ -1,0 +1,2 @@
+Information Quantities: 2.32193 1.73697 1 
+Entropy = 1.48548
