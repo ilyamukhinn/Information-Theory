@@ -1,0 +1,2 @@
+Codes: f = 31  b = 30  a = 2  c = 1  e = 0  
+Average Length = 1.15
