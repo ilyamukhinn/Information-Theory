@@ -1,6 +1,6 @@
 #include "functions.hpp"
 
-//Чтение алфавита и вероятностей из файла
+//Reading input data
 void Functions::Read_file(FILE* fin, std::vector<char>& Str)
 {
 	char ch = '\0';
@@ -13,10 +13,10 @@ void Functions::Read_file(FILE* fin, std::vector<char>& Str)
 	fclose(fin);
 }
 
-//Подсчет количества информации на каждый символ и Энтропии
+//Encoding function
 Code Functions::Encode(const std::vector<char>& Str)
 {
-	//Записываем алфавит на основе входной строки
+	//Getting an alphabet based on input message
 	std::vector<char> Alphabet;
 	Alphabet.push_back(Str[0]);
 
@@ -37,7 +37,7 @@ Code Functions::Encode(const std::vector<char>& Str)
 		}
 	}
 
-	//Формируем вектор вероятностей
+	//Getting probabilities of message symbols 
 	mpf_t* Probability = new mpf_t[Alphabet.size()];
 
 	mpf_t count, inc, Str_size;
@@ -68,7 +68,7 @@ Code Functions::Encode(const std::vector<char>& Str)
 	mpf_clear(inc);
 	mpf_clear(Str_size);
 
-	//Формируем отрезок, с помощью которого будем кодировать
+	//Getting a segment, which is used for data encoding
 	mpf_t* Segment = new mpf_t[Alphabet.size() + 1];
 
 	mpf_t New_seg;
@@ -87,6 +87,7 @@ Code Functions::Encode(const std::vector<char>& Str)
 
 	mpf_clear(New_seg);
 
+	//Encode data
 	Code obj;
 
 	obj.Alphabet = Alphabet;
@@ -168,10 +169,10 @@ Code Functions::Encode(const std::vector<char>& Str)
 	return obj;
 }
 
+//Decode function
 std::vector<char> Functions::Decode(const Code& obj)
 {
-	//Декодирование
-	//Формируем отрезок, с помощью которого будем кодировать
+	//Getting a segment, which is used for data decoding
 	mpf_t* Segment = new mpf_t[obj.Alphabet.size() + 1];
 	mpf_t New_seg;
 	mpf_init2(New_seg, 9999);
@@ -188,7 +189,7 @@ std::vector<char> Functions::Decode(const Code& obj)
 
 	mpf_clear(New_seg);
 
-	//Осуществялем декодирование
+	//Decode data
 	mpf_t Code, Numerator, DeNumerator;
 	mpf_init2(Numerator, 9999);
 	mpf_init2(DeNumerator, 9999);
@@ -233,6 +234,7 @@ std::vector<char> Functions::Decode(const Code& obj)
 	return Message;
 }
 
+//Writing results into output file
 void Functions::Write_file(FILE* fout, const Code& obj, const std::vector<char>& Message) {
 	fprintf(fout, "Code = ");
 	mpf_out_str(fout, 10, 0, obj.code);
